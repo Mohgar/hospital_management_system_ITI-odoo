@@ -1,0 +1,80 @@
+<odoo>
+    <template id="report_patient_status" name="Patient Status Report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Patient Status Report</h2>
+                    <div class="row mt16">
+                        <div class="col-6">
+                            <strong>Name:</strong> <span t-field="object.first_name"/> <span t-field="object.last_name"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Age:</strong> <span t-field="object.age"/>
+                        </div>
+                    </div>
+                    <div class="row mt16">
+                        <div class="col-6">
+                            <strong>Department:</strong> <span t-field="object.department_id.name"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Doctors:</strong>
+                            <t t-foreach="object.doctor_ids" t-as="doctor">
+                                <span t-field="doctor.first_name"/> <span t-field="doctor.last_name"/>
+                                <t t-if="not doctor_last">, </t>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="row mt16">
+                        <h4>Log History</h4>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Date</th>
+                                    <th>Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="object.log_history_ids" t-as="log">
+                                    <tr>
+                                        <td t-field="log.created_by.name"/>
+                                        <td t-field="log.date"/>
+                                        <td t-field="log.description"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt16">
+                        <div class="col-6">
+                            <strong>Birth date:</strong> <span t-field="object.birth_date"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>PCR:</strong> <span t-field="object.cr_ratio"/>
+                        </div>
+                    </div>
+                    <div class="row mt16">
+                        <div class="col-6">
+                            <strong>Blood Type:</strong> <span t-field="object.blood_type"/>
+                        </div>
+                        <div class="col-6">
+                            <strong>Email:</strong> <span t-field="object.email"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_patient_status"
+        string="Patient Status Report"
+        model="hms.patient"
+        report_type="qweb-pdf"
+        name="hms.report_patient_status"
+        file="hms.report_patient_status"
+        paperformat="paperformat_euro"
+    />
+</odoo>

@@ -1,0 +1,74 @@
+<odoo>
+    <record id="view_patient_form" model="ir.ui.view">
+        <field name="name">hms.patient.form</field>
+        <field name="model">hms.patient</field>
+        <field name="inherit_id" ref="hms.view_patient_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('group_hms_user')])]"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='doctor_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+             </xpath>
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="birth_date"/>
+                            <field name="age" readonly="1"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                            <field name="blood_type"/>
+                            <field name="pcr"/>
+                            <field name="cr_ratio"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Medical Info">
+                            <field name="state"/>
+                            <field name="department_id"/>
+                            <field name="department_capacity" readonly="1"/>
+                            <field name="doctor_ids"
+                                   domain="[('department_id', '=', department_id)]"
+                                   context="{'default_department_id': department_id}"/>
+                        </page>
+                        <page string="History" name="history_page">
+                            <field name="history"/>
+                        </page>
+                        <page string="Contact">
+                            <field name="address"/>
+                            <field name="related_customer_id"/>
+                        </page>
+                        <page string="Log History">
+                            <field name="log_history_ids">
+                                <list>
+                                    <field name="created_by"/>
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_patient_list" model="ir.ui.view">
+        <field name="name">hms.patient.list</field>
+        <field name="model">hms.patient</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="age"/>
+                <field name="blood_type"/>
+                <field name="state"/>
+                <field name="department_id"/>
+                <field name="doctor_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+</odoo>
